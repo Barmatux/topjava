@@ -63,8 +63,11 @@ public class UserMealsUtil {
         int c=0;
         Map <LocalDate,List<UserMeal>> userMealMap ;
           userMealMap=  mealList.stream().collect(Collectors.groupingBy(e->e.getDateTime().toLocalDate()));
-          userMealMap.entrySet().stream().map((v)->v.getValue().stream().map(k->k.getCalories())).filter(k->c<2000).
-          collect();
+        Map <LocalDate,List<UserMeal>> userMealMap1 =  userMealMap.entrySet().stream().filter(l->l.getValue().stream().
+                mapToInt(o->o.getCalories()).sum()>caloriesPerDay).collect(Collectors.toMap(k->k.getKey(),v->v.getValue()));
+
+
+
 
 
 
