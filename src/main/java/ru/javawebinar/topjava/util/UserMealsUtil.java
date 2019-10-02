@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -25,44 +26,49 @@ public class UserMealsUtil {
 //        .toLocalTime();
     }
 
+//    public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime,
+//                                                                    LocalTime endTime, int caloriesPerDay) {
+//
+//
+//        Map <LocalDate,List<UserMeal>> userMealMap = new HashMap();
+//        List<UserMealWithExceed> userMealWithExceed = new ArrayList<>();
+//        List<UserMealWithExceed> userMealWithExceedFinal = new ArrayList<>();
+//
+//        for(UserMeal userMeal:mealList){
+//            userMealMap.computeIfAbsent(userMeal.getDateTime().toLocalDate(),user->new ArrayList<>()).add(userMeal);
+//        }
+//
+//        for(Map.Entry<LocalDate,List<UserMeal>> pair:userMealMap.entrySet()){
+//            int calories=0;
+//            for(UserMeal userMealCheck:pair.getValue()){
+//               calories +=  userMealCheck.getCalories();
+//            }
+//            if(calories>caloriesPerDay){
+//                for(UserMeal userMealCheck:pair.getValue()){
+//                    userMealWithExceed.add(new UserMealWithExceed(userMealCheck.getDateTime(),userMealCheck.getDescription(),
+//                            userMealCheck.getCalories(),true));
+//                }
+//            }
+//        }
+//        for(UserMealWithExceed userMealWithExceedByTime: userMealWithExceed) {
+//            if (TimeUtil.isBetween(userMealWithExceedByTime.getDateTime().toLocalTime(), startTime, endTime)) {
+//                userMealWithExceedFinal.add(userMealWithExceedByTime);
+//            }
+//        }
+//        return userMealWithExceedFinal;
+//    }
+
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime,
                                                                     LocalTime endTime, int caloriesPerDay) {
+        int c=0;
+        Map <LocalDate,List<UserMeal>> userMealMap ;
+          userMealMap=  mealList.stream().collect(Collectors.groupingBy(e->e.getDateTime().toLocalDate()));
+          userMealMap.entrySet().stream().map((v)->v.getValue().stream().map(k->k.getCalories())).filter(k->c<2000).
+          collect();
 
 
-        Map <LocalDate,List<UserMeal>> userMealMap = new HashMap();
-        List<UserMealWithExceed> userMealWithExceed = new ArrayList<>();
-        List<UserMealWithExceed> userMealWithExceedFinal = new ArrayList<>();
 
-        for(UserMeal userMeal:mealList){
-            userMealMap.computeIfAbsent(userMeal.getDateTime().toLocalDate(),user->new ArrayList<>()).add(userMeal);
-        }
-
-        for(Map.Entry<LocalDate,List<UserMeal>> pair:userMealMap.entrySet()){
-            int calories=0;
-            for(UserMeal userMealCheck:pair.getValue()){
-               calories +=  userMealCheck.getCalories();
-            }
-            if(calories>caloriesPerDay){
-                for(UserMeal userMealCheck:pair.getValue()){
-                    userMealWithExceed.add(new UserMealWithExceed(userMealCheck.getDateTime(),userMealCheck.getDescription(),
-                            userMealCheck.getCalories(),true));
-                }
-            }
-        }
-        for(UserMealWithExceed userMealWithExceedByTime: userMealWithExceed) {
-            if (TimeUtil.isBetween(userMealWithExceedByTime.getDateTime().toLocalTime(), startTime, endTime)) {
-                userMealWithExceedFinal.add(userMealWithExceedByTime);
-            }
-        }
-        return userMealWithExceedFinal;
+    return null;}
     }
 
-    public static List<UserMealWithExceed>  getFilteredWithExceeded2(List<UserMeal> mealList, LocalTime startTime,
-                                                                    LocalTime endTime, int caloriesPerDay) {
-        mealList.stream().map
 
-
-    return null}
-    }
-
-}
